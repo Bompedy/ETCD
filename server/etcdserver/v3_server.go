@@ -100,6 +100,53 @@ type Authenticator interface {
 	RoleList(ctx context.Context, r *pb.AuthRoleListRequest) (*pb.AuthRoleListResponse, error)
 }
 
+func (s *EtcdServer) PaxosGet(ctx context.Context, r *pb.RangeRequest) (*pb.RangeResponse, error) {
+	defer s.paxos.Lock.Unlock()
+	s.paxos.Lock.Lock()
+	if r.RangeEnd != nil {
+		panic("Range not supported only one key at a time!")
+	}
+
+	value, reason := s.paxos.Read(s, r.Key)
+	if reason != nil {
+		return nil, reason
+	}
+	var kvs = []*mvccpb.KeyValue{{
+		Key:            r.Key,
+		CreateRevision: 0,
+		ModRevision:    0,
+		Version:        0,
+		Value:          value,
+		Lease:          0,
+	}}
+	return &pb.RangeResponse{
+		Header: &pb.ResponseHeader{},
+		Kvs:    kvs,
+	}, nil
+}
+
+func (s *EtcdServer) PaxosPut(ctx context.Context, r *pb.PutRequest) (*pb.PutResponse, error) {
+	defer s.paxos.Lock.Unlock()
+	s.paxos.Lock.Lock()
+	// write to etcd here
+	reason := s.paxos.Write(s, r.Key, r.Value)
+	if reason != nil {
+		return nil, reason
+	}
+
+	return &pb.PutResponse{
+		Header: &pb.ResponseHeader{},
+		PrevKv: &mvccpb.KeyValue{
+			Key:            r.Key,
+			CreateRevision: 0,
+			ModRevision:    0,
+			Version:        0,
+			Value:          make([]byte, 0), //hence empty value here
+			Lease:          0,
+		},
+	}, nil
+}
+
 func (s *EtcdServer) PineappleTxn(ctx context.Context, r *pb.TxnRequest) (*pb.TxnResponse, error) {
 	err := s.pineapple.ReadModifyWrite(r.Compare[0].Key, &EtcdCas{*r})
 	if err != nil {
@@ -233,7 +280,9 @@ func (s *EtcdServer) Txn(ctx context.Context, r *pb.TxnRequest) (*pb.TxnResponse
 func (s *EtcdServer) Put(ctx context.Context, r *pb.PutRequest) (*pb.PutResponse, error) {
 	//Then it decides if it should use pineapple or raft to handle the request
 	//note that at this point the call may be to a follower or a leader.
-	if PINEAPPLE {
+	if RS_PAXOS {
+		return s.PaxosPut(ctx, r)
+	} else if PINEAPPLE {
 		return s.PineapplePut(ctx, r)
 	}
 	return s.RaftPut(ctx, r)
@@ -252,7 +301,9 @@ func (s *EtcdServer) RaftPut(ctx context.Context, r *pb.PutRequest) (*pb.PutResp
 	return resp.(*pb.PutResponse), nil
 }
 func (s *EtcdServer) Range(ctx context.Context, r *pb.RangeRequest) (*pb.RangeResponse, error) {
-	if PINEAPPLE {
+	if RS_PAXOS {
+		return s.PaxosGet(ctx, r)
+	} else if PINEAPPLE {
 		return s.PineappleRange(ctx, r)
 	}
 	return s.RaftRange(ctx, r)

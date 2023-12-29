@@ -20,7 +20,9 @@ import (
 	"encoding/json"
 	"expvar"
 	"fmt"
+	"github.com/Bompedy/RS-Paxos/paxos"
 	"github.com/exerosis/PineappleGo/pineapple"
+	"github.com/klauspost/reedsolomon"
 	"math"
 	"math/rand"
 	"net"
@@ -221,6 +223,7 @@ func LoadEnv(name string) bool {
 
 var PINEAPPLE = LoadEnv("PINEAPPLE")
 var MEMORY = LoadEnv("PINEAPPLE_MEMORY")
+var RS_PAXOS = LoadEnv("RS_PAXOS")
 
 // EtcdServer is the production implementation of the Server interface
 type EtcdServer struct {
@@ -234,6 +237,7 @@ type EtcdServer struct {
 	consistIndex cindex.ConsistentIndexer // consistIndex is used to get/set/save consistentIndex
 	r            raftNode                 // uses 64-bit atomics; keep 64-bit aligned.
 	pineapple    pineapple.Node[*EtcdCas]
+	paxos        paxos.Node
 	readych      chan struct{}
 	Cfg          config.ServerConfig
 
@@ -490,6 +494,9 @@ func NewServer(cfg config.ServerConfig) (srv *EtcdServer, err error) {
 		"192.168.1.2:2000",
 		"192.168.1.3:2000",
 		"192.168.1.4:2000",
+		"192.168.1.5:2000",
+		"192.168.1.6:2000",
+		"192.168.1.7:2000",
 	}
 	var local = fmt.Sprintf("%s:%d", address, 2000)
 	heartbeat := time.Duration(100_000) * time.Millisecond
@@ -550,7 +557,33 @@ func NewServer(cfg config.ServerConfig) (srv *EtcdServer, err error) {
 	srv.kv = mvcc.New(srv.Logger(), srv.be, srv.lessor, mvccStoreConfig)
 
 	//if pineapple is selected on startup it runs this to start he node
-	if PINEAPPLE {
+	if RS_PAXOS {
+		encoder, err := reedsolomon.New(3, 3)
+		if err != nil {
+			panic("PROBLEM CREATING RS ENCODER")
+		}
+
+		srv.paxos = paxos.Node{
+			Clients: make([]paxos.Client, 0),
+			Storage: paxos.Storage{
+				Data: make(map[uint64]byte),
+			},
+			Lock:     sync.Mutex{},
+			Majority: len(addresses)/2 + 1,
+			Encoder:  encoder,
+			Total:    len(addresses),
+		}
+		go func() {
+			err := srv.paxos.Accept(srv, local)
+			if err != nil {
+				panic(err)
+			}
+		}()
+		err = srv.paxos.Connect(local, addresses)
+		if err != nil {
+			panic(err)
+		}
+	} else if PINEAPPLE {
 		println("PINEAPPLE ENABLED (test mode)")
 		var storage pineapple.Storage
 		//if memory is selected it creates simple memory storage (never used anymore)
