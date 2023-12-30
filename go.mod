@@ -1,6 +1,6 @@
 module go.etcd.io/etcd/v3
 
-go 1.21.4
+go 1.21.3
 
 replace (
 	github.com/exerosis/PineappleGo => ../PineappleGo
