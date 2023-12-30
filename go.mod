@@ -6,6 +6,7 @@ replace (
 	github.com/exerosis/PineappleGo => ../PineappleGo
 	github.com/exerosis/RabiaGo => ../RabiaGo
 	github.com/exerosis/raft => ../Raft
+	github.com/Bompedy/RS-Paxos => ../RS-Paxos
 	go.etcd.io/etcd/api/v3 => ./api
 	go.etcd.io/etcd/client/pkg/v3 => ./client/pkg
 	go.etcd.io/etcd/client/v2 => ./client/v2
