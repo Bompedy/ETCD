@@ -43,7 +43,7 @@ require (
 
 require (
 	github.com/BertoldVdb/go-misc v0.1.8 // indirect
-	github.com/Bompedy/RS-Paxos v0.0.0-20231230042737-55c080120a13 // indirect
+	github.com/Bompedy/RS-Paxos v0.0.0-20231230052732-af39b1d1247a // indirect
 	github.com/VividCortex/ewma v1.1.1 // indirect
 	github.com/benbjohnson/clock v1.1.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
