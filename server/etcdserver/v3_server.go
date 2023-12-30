@@ -128,11 +128,13 @@ func (s *EtcdServer) PaxosGet(ctx context.Context, r *pb.RangeRequest) (*pb.Rang
 func (s *EtcdServer) PaxosPut(ctx context.Context, r *pb.PutRequest) (*pb.PutResponse, error) {
 	defer s.paxos.Lock.Unlock()
 	s.paxos.Lock.Lock()
+	println("RS_PAXOS: Putting")
 	// write to etcd here
 	reason := s.paxos.Write(s, r.Key, r.Value)
 	if reason != nil {
 		return nil, reason
 	}
+	println("RS_PAXOS: Put Complete")
 
 	return &pb.PutResponse{
 		Header: &pb.ResponseHeader{},

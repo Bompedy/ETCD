@@ -589,6 +589,7 @@ func NewServer(cfg config.ServerConfig) (srv *EtcdServer, err error) {
 			Total:   len(addresses) + 1,
 		}
 		go func() {
+			println("RS-PAXOS: ACCEPTING")
 			err := srv.paxos.Accept(srv, local)
 			if err != nil {
 				panic(err)
@@ -598,7 +599,7 @@ func NewServer(cfg config.ServerConfig) (srv *EtcdServer, err error) {
 		if err != nil {
 			panic(err)
 		}
-		println("RS-PAXOS CONNECTED")
+		println("RS-PAXOS: CONNECTED")
 	} else if PINEAPPLE {
 		println("PINEAPPLE ENABLED (test mode)")
 		var storage pineapple.Storage
