@@ -1,6 +1,6 @@
 module go.etcd.io/etcd/server/v3
 
-go 1.21.4
+go 1.19
 
 require (
 	github.com/Bompedy/RS-Paxos v0.0.0-20231230042737-55c080120a13
