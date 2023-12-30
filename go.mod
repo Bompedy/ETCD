@@ -3,10 +3,10 @@ module go.etcd.io/etcd/v3
 go 1.19
 
 replace (
+	github.com/Bompedy/RS-Paxos => ../RS-Paxos
 	github.com/exerosis/PineappleGo => ../PineappleGo
 	github.com/exerosis/RabiaGo => ../RabiaGo
 	github.com/exerosis/raft => ../Raft
-	github.com/Bompedy/RS-Paxos => ../RS-Paxos
 	go.etcd.io/etcd/api/v3 => ./api
 	go.etcd.io/etcd/client/pkg/v3 => ./client/pkg
 	go.etcd.io/etcd/client/v2 => ./client/v2
@@ -44,7 +44,7 @@ require (
 
 require (
 	github.com/BertoldVdb/go-misc v0.1.8 // indirect
-	github.com/Bompedy/RS-Paxos v0.0.0-20231230052732-af39b1d1247a // indirect
+	github.com/Bompedy/RS-Paxos v0.0.0-20231230060516-485a976cf1c1 // indirect
 	github.com/VividCortex/ewma v1.1.1 // indirect
 	github.com/benbjohnson/clock v1.1.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
