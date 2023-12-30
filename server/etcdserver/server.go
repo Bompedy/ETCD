@@ -446,6 +446,18 @@ func (e *EtcdStorage) Set(key []byte, tag pineapple.Tag, value []byte) {
 	//_, _ = e.etcd.RaftPut(context.Background(), &pb.PutRequest{Key: key, Value: value})
 }
 
+func filterAddress(local string, addresses []string) []string {
+	var filtered []string
+
+	for _, addr := range addresses {
+		if addr != local {
+			filtered = append(filtered, addr)
+		}
+	}
+
+	return filtered
+}
+
 // NewServer creates a new EtcdServer from the supplied configuration. The
 // configuration is considered static for the lifetime of the EtcdServer.
 func NewServer(cfg config.ServerConfig) (srv *EtcdServer, err error) {
@@ -475,7 +487,7 @@ func NewServer(cfg config.ServerConfig) (srv *EtcdServer, err error) {
 			panic(reason)
 		}
 		for _, d := range addresses {
-			if strings.Contains(d.String(), "192.168.1.") {
+			if strings.Contains(d.String(), "10.10.1.") {
 				device = d
 				network = i
 			}
@@ -489,16 +501,16 @@ func NewServer(cfg config.ServerConfig) (srv *EtcdServer, err error) {
 	fmt.Printf("Address: %s\n", device)
 
 	var address = strings.Split(device.String(), "/")[0]
-	var addresses = []string{
-		"192.168.1.1:2000",
-		"192.168.1.2:2000",
-		"192.168.1.3:2000",
-		"192.168.1.4:2000",
-		"192.168.1.5:2000",
-		"192.168.1.6:2000",
-		"192.168.1.7:2000",
-	}
 	var local = fmt.Sprintf("%s:%d", address, 2000)
+	addresses := filterAddress(local, []string{
+		"10.10.1.2:2000",
+		"10.10.1.3:2000",
+		"10.10.1.4:2000",
+		"10.10.1.5:2000",
+		"10.10.1.6:2000",
+		//"10.10.1.7:2000",
+	})
+
 	heartbeat := time.Duration(100_000) * time.Millisecond
 	srv = &EtcdServer{
 		readych:               make(chan struct{}),
@@ -579,7 +591,7 @@ func NewServer(cfg config.ServerConfig) (srv *EtcdServer, err error) {
 				panic(err)
 			}
 		}()
-		err = srv.paxos.Connect(local, addresses)
+		err = srv.paxos.Connect(addresses)
 		if err != nil {
 			panic(err)
 		}
