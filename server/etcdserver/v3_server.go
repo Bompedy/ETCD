@@ -135,7 +135,7 @@ func (s *EtcdServer) PaxosGet(ctx context.Context, r *pb.RangeRequest) (*pb.Rang
 func (s *EtcdServer) PaxosPut(ctx context.Context, r *pb.PutRequest) (*pb.PutResponse, error) {
 	defer s.paxos.Lock.Unlock()
 	s.paxos.Lock.Lock()
-	println("RS_PAXOS: Putting")
+	//println("RS_PAXOS: Putting")
 	// write to etcd here
 	trace := traceutil.Get(context.Background())
 	var write = s.KV().Write(trace)
@@ -146,7 +146,7 @@ func (s *EtcdServer) PaxosPut(ctx context.Context, r *pb.PutRequest) (*pb.PutRes
 	if reason != nil {
 		return nil, reason
 	}
-	println("RS_PAXOS: Put Complete")
+	//println("RS_PAXOS: Put Complete")
 
 	return &pb.PutResponse{
 		Header: &pb.ResponseHeader{},
