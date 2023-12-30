@@ -1,36 +1,46 @@
 #!/bin/bash
-cd ../Raft || exit
+
+#cd /local/rs-paxos
+
+cd .. & git clone https://github.com/Bompedy/RS-Paxos.git
+cd RS-PAXOS
 git stash && git stash clear && git pull
+cd ETCD
 cd ../ETCD || exit
 git stash && git stash clear && git pull
 
 HOST=$(hostname | awk -F "." '{print $1}')
 echo "Hostname: $HOST"
 
+
 if [ $HOST = "node-1" ]; then
-    IP="192.168.1.1"
+    IP="10.10.1.1"
 elif [ $HOST = "node-2" ]; then
-    IP="192.168.1.2"
+    IP="10.10.1.2"
 elif [ $HOST = "node-3" ]; then
-    IP="192.168.1.3"
+    IP="10.10.1.3"
 elif [ $HOST = "node-4" ]; then
-    IP="192.168.1.4"
+    IP="10.10.1.4"
 elif [ $HOST = "node-5" ]; then
-    IP="192.168.1.5"
+    IP="10.10.1.5"
 fi
 echo "Local IP: $IP"
 
 if [ "$1" = "raft" ]; then
   export PINEAPPLE="false"
-  export SETUP="--initial-cluster node-1=http://192.168.1.1:12380,node-2=http://192.168.1.2:12380,node-3=http://192.168.1.3:12380,node-4=http://192.168.1.4:12380"
+  export RS_PAXOS="false"
+  export SETUP="--initial-cluster node-1=http://10.10.1.1:12380,node-2=http://10.10.1.2:12380,node-3=http://10.10.1.3:12380,node-4=http://10.10.1.4:12380,node-5=http://10.10.1.5:12380"
+elif [ "$1" = "paxos" ]; then
+  export RS_PAXOS="true"
 else
   export PINEAPPLE="true"
 fi
 
-if [ "$1" = "memory" ]; then
-  export PINEAPPLE_MEMORY="true"
+process_info=$(ps aux | grep "$script_name" | grep -v grep)
+if [[ -n "$process_info" ]]; then
+  echo "Process is running: $process_info"
 else
-  export PINEAPPLE_MEMORY="false"
+  echo "Process is not running."
 fi
 
 sudo rm -rf "$HOST.etcd"

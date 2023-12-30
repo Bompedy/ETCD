@@ -1,6 +1,6 @@
 module go.etcd.io/etcd/v3
 
-go 1.19
+go 1.21.4
 
 replace (
 	github.com/exerosis/PineappleGo => ../PineappleGo
@@ -43,6 +43,7 @@ require (
 
 require (
 	github.com/BertoldVdb/go-misc v0.1.8 // indirect
+	github.com/Bompedy/RS-Paxos v0.0.0-20231230042737-55c080120a13 // indirect
 	github.com/VividCortex/ewma v1.1.1 // indirect
 	github.com/benbjohnson/clock v1.1.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
@@ -69,6 +70,8 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.7.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.1 // indirect
 	github.com/jonboulle/clockwork v0.3.0 // indirect
+	github.com/klauspost/cpuid/v2 v2.1.1 // indirect
+	github.com/klauspost/reedsolomon v1.12.0 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/mattn/go-runewidth v0.0.12 // indirect
