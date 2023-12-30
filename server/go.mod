@@ -1,8 +1,9 @@
 module go.etcd.io/etcd/server/v3
 
-go 1.19
+go 1.21.4
 
 require (
+	github.com/Bompedy/RS-Paxos v0.0.0-20231230042737-55c080120a13
 	github.com/coreos/go-semver v0.3.0
 	github.com/coreos/go-systemd/v22 v22.5.0
 	github.com/dustin/go-humanize v1.0.0
@@ -17,6 +18,7 @@ require (
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/jonboulle/clockwork v0.3.0
+	github.com/klauspost/reedsolomon v1.12.0
 	github.com/prometheus/client_golang v1.14.0
 	github.com/prometheus/client_model v0.3.0
 	github.com/soheilhy/cmux v0.1.5
@@ -60,6 +62,7 @@ require (
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.7.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.1 // indirect
+	github.com/klauspost/cpuid/v2 v2.1.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
