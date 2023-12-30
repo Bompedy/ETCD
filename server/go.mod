@@ -3,7 +3,6 @@ module go.etcd.io/etcd/server/v3
 go 1.19
 
 require (
-	github.com/Bompedy/RS-Paxos v0.0.0-20231230042737-55c080120a13
 	github.com/coreos/go-semver v0.3.0
 	github.com/coreos/go-systemd/v22 v22.5.0
 	github.com/dustin/go-humanize v1.0.0

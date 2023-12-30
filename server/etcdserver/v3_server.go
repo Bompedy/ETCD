@@ -107,16 +107,23 @@ func (s *EtcdServer) PaxosGet(ctx context.Context, r *pb.RangeRequest) (*pb.Rang
 		panic("Range not supported only one key at a time!")
 	}
 
-	value, reason := s.paxos.Read(s, r.Key)
-	if reason != nil {
-		return nil, reason
+	//value, reason := s.paxos.Read(s, r.Key)
+
+	var options = mvcc.RangeOptions{}
+	trace := traceutil.Get(context.Background())
+	var read = s.KV().Read(mvcc.ConcurrentReadTxMode, trace)
+	defer read.End()
+	value, err := read.Range(context.Background(), r.Key, nil, options)
+	if err != nil {
+		panic(err)
 	}
+
 	var kvs = []*mvccpb.KeyValue{{
 		Key:            r.Key,
 		CreateRevision: 0,
 		ModRevision:    0,
 		Version:        0,
-		Value:          value,
+		Value:          value.KVs[0].Value,
 		Lease:          0,
 	}}
 	return &pb.RangeResponse{
@@ -130,7 +137,12 @@ func (s *EtcdServer) PaxosPut(ctx context.Context, r *pb.PutRequest) (*pb.PutRes
 	s.paxos.Lock.Lock()
 	println("RS_PAXOS: Putting")
 	// write to etcd here
-	reason := s.paxos.Write(s, r.Key, r.Value)
+	trace := traceutil.Get(context.Background())
+	var write = s.KV().Write(trace)
+	write.Put(r.Key, r.Value, 0)
+	write.End()
+
+	reason := s.paxos.Write(r.Key, r.Value)
 	if reason != nil {
 		return nil, reason
 	}
