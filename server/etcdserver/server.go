@@ -580,7 +580,7 @@ func NewServer(cfg config.ServerConfig) (srv *EtcdServer, err error) {
 		}
 
 		srv.paxos = paxos.Node{
-			Clients: make([]paxos.Client, 0),
+			Clients: make([]*paxos.Client, 0),
 			Storage: paxos.Storage{
 				Data: make(map[uint64]byte),
 			},
