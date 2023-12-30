@@ -3,6 +3,13 @@
 #cd /local/rs-paxos
 
 cd .. & git clone https://github.com/Bompedy/RS-Paxos.git
+
+
+git config --global --add safe.directory /local/etcd/ETCD
+git config --global --add safe.directory /local/etcd/PineappleGo
+git config --global --add safe.directory /local/etcd/RabiaGo
+git config --global --add safe.directory /local/etcd/RS-Paxos.git
+
 cd RS-PAXOS
 git stash && git stash clear && git pull
 cd ETCD
