@@ -10,9 +10,8 @@ git config --global --add safe.directory /local/etcd/PineappleGo
 git config --global --add safe.directory /local/etcd/RabiaGo
 git config --global --add safe.directory /local/etcd/RS-Paxos.git
 
-cd RS-PAXOS
+cd RS-Paxos
 git stash && git stash clear && git pull
-cd ETCD
 cd ../ETCD || exit
 git stash && git stash clear && git pull
 
