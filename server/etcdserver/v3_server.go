@@ -132,21 +132,8 @@ func (s *EtcdServer) PaxosGet(ctx context.Context, r *pb.RangeRequest) (*pb.Rang
 	}, nil
 }
 
-func (s *EtcdServer) PaxosPut(ctx context.Context, r *pb.PutRequest) (*pb.PutResponse, error) {
-	defer s.paxos.Lock.Unlock()
-	s.paxos.Lock.Lock()
-	//println("RS_PAXOS: Putting")
-	// write to etcd here
-	trace := traceutil.Get(context.Background())
-	var write = s.KV().Write(trace)
-	write.Put(r.Key, r.Value, 0)
-	write.End()
-
-	reason := s.paxos.Write(r.Key, r.Value)
-	if reason != nil {
-		return nil, reason
-	}
-	//println("RS_PAXOS: Put Complete")
+func (s *EtcdServer) PaxosPut(r *pb.PutRequest) (*pb.PutResponse, error) {
+	s.paxos.Write(r.Key, r.Value)
 
 	return &pb.PutResponse{
 		Header: &pb.ResponseHeader{},
@@ -295,7 +282,7 @@ func (s *EtcdServer) Put(ctx context.Context, r *pb.PutRequest) (*pb.PutResponse
 	//Then it decides if it should use pineapple or raft to handle the request
 	//note that at this point the call may be to a follower or a leader.
 	if RS_PAXOS {
-		return s.PaxosPut(ctx, r)
+		return s.PaxosPut(r)
 	} else if PINEAPPLE {
 		return s.PineapplePut(ctx, r)
 	}
