@@ -581,7 +581,7 @@ func NewServer(cfg config.ServerConfig) (srv *EtcdServer, err error) {
 
 		srv.paxos = paxos.Node{
 			Clients: make([]paxos.Client, 0),
-			Encoder: &encoder,
+			Encoder: encoder,
 			Total:   len(addresses) + 1,
 			Log: &paxos.Log{
 				Lock:    sync.Mutex{},
