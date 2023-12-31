@@ -585,7 +585,7 @@ func NewServer(cfg config.ServerConfig) (srv *EtcdServer, err error) {
 			Total:   len(addresses) + 1,
 			Log: paxos.Log{
 				Lock:    &sync.Mutex{},
-				Entries: make(map[uint32]paxos.Entry),
+				Entries: make(map[uint32]*paxos.Entry),
 			},
 		}
 		go func() {
