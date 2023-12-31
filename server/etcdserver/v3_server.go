@@ -101,8 +101,6 @@ type Authenticator interface {
 }
 
 func (s *EtcdServer) PaxosGet(ctx context.Context, r *pb.RangeRequest) (*pb.RangeResponse, error) {
-	defer s.paxos.Lock.Unlock()
-	s.paxos.Lock.Lock()
 	if r.RangeEnd != nil {
 		panic("Range not supported only one key at a time!")
 	}

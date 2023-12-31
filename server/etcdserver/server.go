@@ -584,7 +584,6 @@ func NewServer(cfg config.ServerConfig) (srv *EtcdServer, err error) {
 			Storage: paxos.Storage{
 				Data: make(map[uint64]byte),
 			},
-			Lock:    sync.Mutex{},
 			Encoder: encoder,
 			Total:   len(addresses) + 1,
 			Log: paxos.Log{
