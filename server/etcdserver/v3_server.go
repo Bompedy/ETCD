@@ -101,7 +101,6 @@ type Authenticator interface {
 }
 
 func (s *EtcdServer) PaxosGet(ctx context.Context, r *pb.RangeRequest) (*pb.RangeResponse, error) {
-	println("Is it trying to get?")
 	if r.RangeEnd != nil {
 		panic("Range not supported only one key at a time!")
 	}
@@ -111,7 +110,6 @@ func (s *EtcdServer) PaxosGet(ctx context.Context, r *pb.RangeRequest) (*pb.Rang
 	var options = mvcc.RangeOptions{}
 	trace := traceutil.Get(context.Background())
 	var read = s.KV().Read(mvcc.ConcurrentReadTxMode, trace)
-	defer read.End()
 	value, err := read.Range(context.Background(), r.Key, nil, options)
 	if err != nil {
 		panic(err)
@@ -125,6 +123,8 @@ func (s *EtcdServer) PaxosGet(ctx context.Context, r *pb.RangeRequest) (*pb.Rang
 		Value:          value.KVs[0].Value,
 		Lease:          0,
 	}}
+
+	read.End()
 	return &pb.RangeResponse{
 		Header: &pb.ResponseHeader{},
 		Kvs:    kvs,
