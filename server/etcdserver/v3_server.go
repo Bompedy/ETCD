@@ -118,7 +118,6 @@ func (s *EtcdServer) PaxosGet(ctx context.Context, r *pb.RangeRequest) (*pb.Rang
 	var val []byte
 	val = nil
 	if len(value.KVs) > 0 {
-		println("larger than 0")
 		val = value.KVs[0].Value
 	}
 
