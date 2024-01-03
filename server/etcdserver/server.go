@@ -591,20 +591,20 @@ func NewServer(cfg config.ServerConfig) (srv *EtcdServer, err error) {
 		go func() {
 			println("RS-PAXOS: ACCEPTING")
 			err := srv.paxos.Accept(local, func(key []byte, value []byte) {
-				trace := traceutil.Get(context.Background())
-				var write = srv.KV().Write(trace)
-				write.Put(key, value, 0)
-				write.End()
+				//trace := traceutil.Get(context.Background())
+				//var write = srv.KV().Write(trace)
+				//write.Put(key, value, 0)
+				//write.End()
 			})
 			if err != nil {
 				panic(err)
 			}
 		}()
 		err = srv.paxos.Connect(addresses, func(key []byte, value []byte) {
-			trace := traceutil.Get(context.Background())
-			var write = srv.KV().Write(trace)
-			write.Put(key, value, 0)
-			write.End()
+			//trace := traceutil.Get(context.Background())
+			//var write = srv.KV().Write(trace)
+			//write.Put(key, value, 0)
+			//write.End()
 		})
 
 		if err != nil {
