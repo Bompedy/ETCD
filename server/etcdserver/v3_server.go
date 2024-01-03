@@ -115,12 +115,19 @@ func (s *EtcdServer) PaxosGet(ctx context.Context, r *pb.RangeRequest) (*pb.Rang
 		panic(err)
 	}
 
+	var val []byte
+	val = nil
+	if len(value.KVs) > 0 {
+		println("larger than 0")
+		val = value.KVs[0].Value
+	}
+
 	var kvs = []*mvccpb.KeyValue{{
 		Key:            r.Key,
 		CreateRevision: 0,
 		ModRevision:    0,
 		Version:        0,
-		Value:          value.KVs[0].Value,
+		Value:          val,
 		Lease:          0,
 	}}
 
