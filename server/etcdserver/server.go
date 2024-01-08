@@ -1877,6 +1877,7 @@ func (s *EtcdServer) getTerm() uint64 {
 }
 
 func (s *EtcdServer) setLead(v uint64) {
+	fmt.Printf("Setting leader to: %d", v)
 	atomic.StoreUint64(&s.lead, v)
 }
 
