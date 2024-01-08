@@ -239,6 +239,9 @@ func (s *EtcdServer) Txn(ctx context.Context, r *pb.TxnRequest) (*pb.TxnResponse
 	if PINEAPPLE {
 		return s.PineappleTxn(ctx, r)
 	}
+	if RS_PAXOS {
+		println("PAXOS IS USING TRANSACTIONS")
+	}
 	if txn.IsTxnReadonly(r) {
 		trace := traceutil.New("transaction",
 			s.Logger(),
