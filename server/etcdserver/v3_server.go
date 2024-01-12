@@ -19,6 +19,7 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/binary"
+	"fmt"
 	"go.etcd.io/etcd/api/v3/mvccpb"
 	"strconv"
 	"time"
@@ -309,9 +310,9 @@ func (s *EtcdServer) RaftPut(ctx context.Context, r *pb.PutRequest) (*pb.PutResp
 	}
 
 	response := resp.(*pb.PutResponse)
+	fmt.Printf("\nRevision: %s\n", response.Header.Revision)
 
-	if response.PrevKv != nil {
-		println("")
+	if response.GetPrevKv() != nil {
 		println("Key: %d", len(response.PrevKv.Key))
 		println("Value: %d", len(response.PrevKv.Value))
 	} else {
