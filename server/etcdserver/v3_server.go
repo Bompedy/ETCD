@@ -307,7 +307,15 @@ func (s *EtcdServer) RaftPut(ctx context.Context, r *pb.PutRequest) (*pb.PutResp
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*pb.PutResponse), nil
+
+	response := resp.(*pb.PutResponse)
+
+	if response.PrevKv != nil {
+		println("")
+		println("Key: %d", len(response.PrevKv.Key))
+		println("Value: %d", len(response.PrevKv.Value))
+	}
+	return response, nil
 }
 func (s *EtcdServer) Range(ctx context.Context, r *pb.RangeRequest) (*pb.RangeResponse, error) {
 	if RS_PAXOS {
