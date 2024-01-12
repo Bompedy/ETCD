@@ -314,6 +314,8 @@ func (s *EtcdServer) RaftPut(ctx context.Context, r *pb.PutRequest) (*pb.PutResp
 		println("")
 		println("Key: %d", len(response.PrevKv.Key))
 		println("Value: %d", len(response.PrevKv.Value))
+	} else {
+		println("No previous kv")
 	}
 	return response, nil
 }
