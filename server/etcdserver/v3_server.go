@@ -310,9 +310,12 @@ func (s *EtcdServer) RaftPut(ctx context.Context, r *pb.PutRequest) (*pb.PutResp
 	}
 
 	response := resp.(*pb.PutResponse)
-	fmt.Printf("\nRevision: %s\n", response.Header.Revision)
+	fmt.Printf("\nRevision: %d\n", response.Header.Revision)
+	println("Key: %s", string(r.Key))
+	println("Value: %s", string(r.Value))
 
 	if response.GetPrevKv() != nil {
+		println("Found previous KV")
 		println("Key: %d", len(response.PrevKv.Key))
 		println("Value: %d", len(response.PrevKv.Value))
 	} else {
