@@ -61,6 +61,7 @@ func New() Wait {
 }
 
 func (w *list) Register(id uint64) <-chan interface{} {
+	println("Normal register")
 	idx := id % defaultListElementLength
 	newCh := make(chan interface{}, 1)
 	w.e[idx].l.Lock()
@@ -102,6 +103,7 @@ func NewWithResponse(ch <-chan interface{}) Wait {
 }
 
 func (w *waitWithResponse) Register(id uint64) <-chan interface{} {
+	println("Wait with response")
 	return w.ch
 }
 func (w *waitWithResponse) Trigger(id uint64, x interface{}) {}
