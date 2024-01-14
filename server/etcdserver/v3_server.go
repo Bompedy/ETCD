@@ -19,7 +19,6 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/binary"
-	"fmt"
 	"go.etcd.io/etcd/api/v3/mvccpb"
 	"strconv"
 	"time"
@@ -315,15 +314,15 @@ func (s *EtcdServer) RaftPut(ctx context.Context, r *pb.PutRequest) (*pb.PutResp
 	}
 
 	response := resp.(*pb.PutResponse)
-	fmt.Printf("\nRevision: %d\n", response.Header.Revision)
-	println("Key: ", string(r.Key))
-	println("Value: ", string(r.Value))
+	//fmt.Printf("\nRevision: %d\n", response.Header.Revision)
+	//println("Key: ", string(r.Key))
+	//println("Value: ", string(r.Value))
 
-	if response.GetPrevKv() != nil {
-		println("Found previous KV")
-	} else {
-		println("No previous kv")
-	}
+	//if response.GetPrevKv() != nil {
+	//	println("Found previous KV")
+	//} else {
+	//	println("No previous kv")
+	//}
 	return response, nil
 }
 func (s *EtcdServer) Range(ctx context.Context, r *pb.RangeRequest) (*pb.RangeResponse, error) {
