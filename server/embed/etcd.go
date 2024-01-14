@@ -225,6 +225,8 @@ func StartEtcd(inCfg *Config) (e *Etcd, err error) {
 		V2Deprecation:                                 cfg.V2DeprecationEffective(),
 	}
 
+	srvcfg.BackendBatchLimit = 30
+
 	if srvcfg.ExperimentalEnableDistributedTracing {
 		tctx := context.Background()
 		tracingExporter, err := newTracingExporter(tctx, cfg)
