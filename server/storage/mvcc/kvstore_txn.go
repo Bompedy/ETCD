@@ -140,6 +140,7 @@ type storeTxnWrite struct {
 }
 
 func (s *store) Write(trace *traceutil.Trace) TxnWrite {
+	println("Transaction write")
 	s.mu.RLock()
 	tx := s.b.BatchTx()
 	tx.LockInsideApply()
