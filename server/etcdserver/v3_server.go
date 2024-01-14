@@ -890,6 +890,7 @@ func (s *EtcdServer) processInternalRaftRequestOnce(ctx context.Context, r pb.In
 	err = s.r.Propose(cctx, data)
 	if err != nil {
 		proposalsFailed.Inc()
+		println("Triggered no error")
 		s.w.Trigger(id, nil) // GC wait
 		return nil, err
 	}

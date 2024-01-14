@@ -61,7 +61,6 @@ func New() Wait {
 }
 
 func (w *list) Register(id uint64) <-chan interface{} {
-	println("Normal register")
 	idx := id % defaultListElementLength
 	newCh := make(chan interface{}, 1)
 	w.e[idx].l.Lock()
@@ -78,6 +77,7 @@ func (w *list) Trigger(id uint64, x interface{}) {
 	idx := id % defaultListElementLength
 	w.e[idx].l.Lock()
 	ch := w.e[idx].m[id]
+	println("Trigger")
 	delete(w.e[idx].m, id)
 	w.e[idx].l.Unlock()
 	if ch != nil {
