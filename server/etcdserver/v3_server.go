@@ -795,7 +795,9 @@ func (s *EtcdServer) RoleDelete(ctx context.Context, r *pb.AuthRoleDeleteRequest
 }
 
 func (s *EtcdServer) raftRequestOnce(ctx context.Context, r pb.InternalRaftRequest) (proto.Message, error) {
+	println("processing raft request")
 	result, err := s.processInternalRaftRequestOnce(ctx, r)
+	println("received result")
 	if err != nil {
 		return nil, err
 	}
