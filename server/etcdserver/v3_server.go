@@ -903,6 +903,7 @@ func (s *EtcdServer) processInternalRaftRequestOnce(ctx context.Context, r pb.In
 		return x.(*apply2.Result), nil
 	case <-cctx.Done():
 		proposalsFailed.Inc()
+		println("Trigger 2")
 		s.w.Trigger(id, nil) // GC wait
 		return nil, s.parseProposeCtxErr(cctx.Err(), start)
 	case <-s.done:
