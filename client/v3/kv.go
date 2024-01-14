@@ -112,6 +112,7 @@ func NewKVFromKVClient(remote pb.KVClient, c *Client) KV {
 }
 
 func (kv *kv) Put(ctx context.Context, key, val string, opts ...OpOption) (*PutResponse, error) {
+	println("\nkvPut")
 	r, err := kv.Do(ctx, OpPut(key, val, opts...))
 	return r.put, toErr(ctx, err)
 }
@@ -156,6 +157,7 @@ func (kv *kv) Do(ctx context.Context, op Op) (OpResponse, error) {
 			err = rpctypes.ErrInvalidSortOption
 		}
 	case tPut:
+		println("tPut")
 		var resp *pb.PutResponse
 		r := &pb.PutRequest{Key: op.key, Value: op.val, Lease: int64(op.leaseID), PrevKv: op.prevKV, IgnoreValue: op.ignoreValue, IgnoreLease: op.ignoreLease}
 		resp, err = kv.remote.Put(ctx, r, kv.callOpts...)
