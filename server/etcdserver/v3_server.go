@@ -294,6 +294,7 @@ func (s *EtcdServer) Txn(ctx context.Context, r *pb.TxnRequest) (*pb.TxnResponse
 func (s *EtcdServer) Put(ctx context.Context, r *pb.PutRequest) (*pb.PutResponse, error) {
 	//Then it decides if it should use pineapple or raft to handle the request
 	//note that at this point the call may be to a follower or a leader.
+	println("Raft put: ")
 	if RS_PAXOS {
 		return s.PaxosPut(r)
 	} else if PINEAPPLE {
