@@ -898,6 +898,7 @@ func (s *EtcdServer) processInternalRaftRequestOnce(ctx context.Context, r pb.In
 
 	select {
 	case x := <-ch:
+		println("channel completed")
 		return x.(*apply2.Result), nil
 	case <-cctx.Done():
 		proposalsFailed.Inc()
