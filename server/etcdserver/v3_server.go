@@ -795,9 +795,9 @@ func (s *EtcdServer) RoleDelete(ctx context.Context, r *pb.AuthRoleDeleteRequest
 }
 
 func (s *EtcdServer) raftRequestOnce(ctx context.Context, r pb.InternalRaftRequest) (proto.Message, error) {
-	println("processing raft request")
+	//println("processing raft request")
 	result, err := s.processInternalRaftRequestOnce(ctx, r)
-	println("received result")
+	//println("received result")
 	if err != nil {
 		return nil, err
 	}
@@ -899,7 +899,7 @@ func (s *EtcdServer) processInternalRaftRequestOnce(ctx context.Context, r pb.In
 
 	select {
 	case x := <-ch:
-		println("channel completed")
+		//println("channel completed")
 		return x.(*apply2.Result), nil
 	case <-cctx.Done():
 		proposalsFailed.Inc()

@@ -1053,7 +1053,7 @@ func (s *EtcdServer) run() {
 				setSyncC(nil)
 			} else {
 				if newLeader {
-					println("UPDATED LEADERSHIP")
+					println("\nUPDATED LEADERSHIP")
 					t := time.Now()
 					s.leadTimeMu.Lock()
 					s.leadElectedTime = t
