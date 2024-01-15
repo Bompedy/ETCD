@@ -155,7 +155,7 @@ func (a *uberApplier) dispatch(ctx context.Context, r *pb.InternalRaftRequest, s
 		op = "Range"
 		ar.Resp, ar.Err = a.applyV3.Range(ctx, nil, r.Range)
 	case r.Put != nil:
-		println("\nWas put called?")
+		//println("\nWas put called?")
 		op = "Put"
 		ar.Resp, ar.Trace, ar.Err = a.applyV3.Put(ctx, nil, r.Put)
 	case r.DeleteRange != nil:

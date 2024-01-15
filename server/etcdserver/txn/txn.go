@@ -50,7 +50,7 @@ func Put(ctx context.Context, lg *zap.Logger, lessor lease.Lessor, kv mvcc.KV, t
 				return nil, nil, lease.ErrLeaseNotFound
 			}
 		}
-		println("Creating new transaction Write")
+		//println("Creating new transaction Write")
 		txnWrite = kv.Write(trace)
 		defer txnWrite.End()
 	}
@@ -83,7 +83,7 @@ func Put(ctx context.Context, lg *zap.Logger, lessor lease.Lessor, kv mvcc.KV, t
 		}
 	}
 
-	println("Put in transaction")
+	//println("Put in transaction")
 	resp.Header.Revision = txnWrite.Put(p.Key, val, leaseID)
 	trace.AddField(traceutil.Field{Key: "response_revision", Value: resp.Header.Revision})
 	return resp, trace, nil

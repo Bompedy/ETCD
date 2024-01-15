@@ -77,7 +77,7 @@ func (w *list) Trigger(id uint64, x interface{}) {
 	idx := id % defaultListElementLength
 	w.e[idx].l.Lock()
 	ch := w.e[idx].m[id]
-	println("Trigger")
+	//println("Trigger")
 	delete(w.e[idx].m, id)
 	w.e[idx].l.Unlock()
 	if ch != nil {

@@ -591,7 +591,7 @@ func NewServer(cfg config.ServerConfig) (srv *EtcdServer, err error) {
 		go func() {
 			println("RS-PAXOS: ACCEPTING")
 			err := srv.paxos.Accept(local, func(key []byte, value []byte) {
-				trace := traceutil.Get(context.Background())
+				trace := traceutil.Get(context.TODO())
 				var write = srv.KV().Write(trace)
 				write.Put(key, value, 0)
 				write.End()
@@ -2118,7 +2118,7 @@ func (s *EtcdServer) apply(
 
 // applyEntryNormal applies an EntryNormal type raftpb request to the EtcdServer
 func (s *EtcdServer) applyEntryNormal(e *raftpb.Entry) {
-	println("Apply entry normal")
+	//println("Apply entry normal")
 	shouldApplyV3 := membership.ApplyV2storeOnly
 	var ar *apply.Result
 	index := s.consistIndex.ConsistentIndex()
