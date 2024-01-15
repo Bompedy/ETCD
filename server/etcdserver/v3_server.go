@@ -328,7 +328,7 @@ func (s *EtcdServer) RaftPut(ctx context.Context, r *pb.PutRequest) (*pb.PutResp
 	//} else {
 	//	println("No previous kv")
 	//}
-	println("Already got raft response")
+	//println("Already got raft response")
 	return response, nil
 }
 func (s *EtcdServer) Range(ctx context.Context, r *pb.RangeRequest) (*pb.RangeResponse, error) {
